@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <propel>
+    <datasources default="skigreecedata">
+      <datasource id="skigreecedata">
+        <adapter>mysql</adapter>
+        <connection>
+          <dsn>mysql:host=db27.grserver.gr;port=3306;dbname=skigreecedata</dsn>
+          <user>skigreece</user>
+          <password>p2nas0qe</password>
+          <settings>
+              <setting id="charset">utf8</setting>
+          </settings>
+        </connection>
+      </datasource>
+    </datasources>
+     <debugpdo>
+      <logging>
+        <details>
+          <method>
+            <enabled>true</enabled>
+          </method>
+          <time>
+            <enabled>true</enabled>
+          </time>
+          <mem>
+            <enabled>true</enabled>
+          </mem>
+        </details>
+      </logging>
+    </debugpdo>
+  </propel>
+</config>

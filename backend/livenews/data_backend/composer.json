@@ -1,0 +1,11 @@
+{
+	"require": {
+		"propel/propel1": ">=1.7.0",
+		"rmccue/requests": ">=1.0",
+		"dispatch/dispatch": "2.*"
+	},
+    "autoload": {
+        "psr-0": {"Requests": "library/"}
+    }
+}
+

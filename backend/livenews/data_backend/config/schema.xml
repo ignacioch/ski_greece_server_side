@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="skigreecedata" defaultIdMethod="native" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://xsd.propelorm.org/1.6/database.xsd"
+          defaultPhpNamingMethod="nochange">
+
+  <table name="skicenter" phpName="SkiCenter">
+  	<column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+  	<column name="name" type="VARCHAR" size="255" required="true" />
+    <column name="englishName" type="VARCHAR" size="255" required="true" />
+  	<column name="snow_down" type="INTEGER"/>
+  	<column name="snow_up" type="INTEGER" />
+  	<column name="temp" type="DOUBLE"/>
+  	<column name="website" type="VARCHAR" size="255" />
+    <column name="weatherurl" type="VARCHAR" size="255" />
+    <column name="open" type="INTEGER" size="1"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+      <parameter name="Collation" value="utf8_general_ci" />
+    </vendor>
+  </table>
+  
+  <table name="track" phpName="Track">
+  	<column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+  	<column name="name" type="VARCHAR" size="255" required="true"/>
+  	<column name="skicenter_id" type="INTEGER" required="true"/>
+  	<column name="difficulty" type="VARCHAR" size="40"/>
+  	<column name="length" type="INTEGER" />
+    <column name="open" type="INTEGER" size="1"/>
+
+  	
+  	<foreign-key foreignTable="skicenter" phpName="SkiCenter" refPhpName="Track">
+  		<reference local="skicenter_id" foreign="id" />
+  	</foreign-key>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+      <parameter name="Collation" value="utf8_general_ci" />
+    </vendor>
+  </table>
+
+  <table name="lift" phpName="Lift">
+    <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+    <column name="name" type="VARCHAR" size="255"/>
+    <column name="open" type="INTEGER" size="1"/>
+    <column name="skicenter_id" type="INTEGER" required="true"/>
+
+    <foreign-key foreignTable="skicenter" phpName="SkiCenter" refPhpName="Lift">
+      <reference local="skicenter_id" foreign="id" />
+    </foreign-key>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+      <parameter name="Collation" value="utf8_general_ci" />
+    </vendor>
+  </table>
+
+  <table name="offer" phpName="Offer">
+    <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+    <column name="urlimage" type="VARCHAR" size="255"/>
+    <column name="comments" type="VARCHAR" size="255"/>
+    <column name="skicenter_id" type="INTEGER" required="true"/>
+
+    <foreign-key foreignTable="skicenter" phpName="SkiCenter" refPhpName="Offer">
+      <reference local="skicenter_id" foreign="id" />
+    </foreign-key>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+      <parameter name="Collation" value="utf8_general_ci" />
+    </vendor>
+  </table>
+
+  <table name="camera" phpName="Camera">
+    <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+    <column name="url" type="VARCHAR" size="255"/>
+    <column name="skicenter_id" type="INTEGER" required="true"/>
+
+    <foreign-key foreignTable="skicenter" phpName="SkiCenter" refPhpName="Camera">
+      <reference local="skicenter_id" foreign="id" />
+    </foreign-key>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+      <parameter name="Charset" value="utf8"/>
+      <parameter name="Collation" value="utf8_general_ci" />
+    </vendor>
+  </table>
+
+
+</database>
