@@ -7,7 +7,15 @@
 
     <body>
         <h1>Rango says...</h1>
-        hello world! <strong>{{ boldmessage }}</strong><br />
+        {% if skicenters %}
+            <ul>
+                {% for center in skicenters %}
+                <li>{{ center.englishname }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>There are no categories present.</strong>
+        {% endif %}
         <a href="/dashboard/about/">About</a><br />
     </body>
 
