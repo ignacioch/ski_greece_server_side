@@ -692,6 +692,11 @@ foreach ( $elements as $element ) {
     
 }
 
+// Initial values
+$snow_up = 0;
+$snow_down = 0;
+$temp = 10 ;
+
 $cnt=0;
 $nodes = $xpath->query("//center/table/td/font");
 foreach ($nodes as $node) {
@@ -748,49 +753,13 @@ if ($snow_up - $previous_snow_up > 30) {
   $reportMessage.="Notification for SNOW should NOT be sent <br/>";
 }
 
-
-
-
-
-/*$cart["total_lifts"]=$total_lifts;
-$cart["closed_lifts"]=$closed_lifts;
-$cart["total_tracks"]=$total_tracks;
-$cart["closed_tracks"]=$closed_tracks;*/
-
-// Update the DB for snow_up
-/*    echo "Snow up : ".$snow_up."\t" ;
-    echo "Snow down : ".$snow_down."\t" ;
-      
-    $reportMessage.= "Snow up : ".$snow_up."\t" ;
-    $reportMessage.= "Snow down : ".$snow_down."\t" ;
-      
-
-    $query_snow= "UPDATE skicenter SET snow_up=$snow_up,snow_down=$snow_down WHERE id=1";
-    echo "Query:".$query_snow."\t";
-      
-      $result=mysql_query($query_snow) or die(mysql_error());
-      if (!$result) {
-          echo "ERROR: Database could not be updated";
-          $reportMessage.="ERROR: Database could not be updated";
-      } else {
-        echo "SUCCESSFUL";
-        $reportMessage.="SUCCESS";
-      }
-      
-      $reportMessage.="<br />\n";
-
-      echo "<br />\n";*/
-
-
-
-
 $timezone = date_default_timezone_get();
 echo "The current server timezone is: " . $timezone;
 date_default_timezone_set($timezone);
 $date = date('m/d/Y h:i:s a', time());
 
 
-$mail = new PHPMailer;
+/*$mail = new PHPMailer;
 
 $mail->isSMTP();                                      // Set mailer to use SMTP
 //$mail->Host = 'smtp.gmail.com';  // Specify main and backup server
@@ -823,7 +792,7 @@ if(!$mail->send()) {
   echo 'Message could not be sent.';
   echo 'Mailer Error: ' . $mail->ErrorInfo;
   exit;
-}
+}*/
 
 
 
