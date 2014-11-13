@@ -2,8 +2,8 @@
 
 <?php
 
-require 'PHPMailer/PHPMailerAutoload.php';
-require 'PHPMailer/class.phpmailer.php';
+#require 'PHPMailer/PHPMailerAutoload.php';
+#require 'PHPMailer/class.phpmailer.php';
 
 $reportMessage="";
 
@@ -367,7 +367,7 @@ echo "The current server timezone is: " . $timezone;
 date_default_timezone_set($timezone);
 $date = date('m/d/Y h:i:s a', time());
 
-$mail = new PHPMailer;
+/*$mail = new PHPMailer;
 
 $mail->isSMTP();                                      // Set mailer to use SMTP
 //$mail->Host = 'smtp.gmail.com';  // Specify main and backup server
@@ -400,7 +400,7 @@ if(!$mail->send()) {
   echo 'Message could not be sent.';
   echo 'Mailer Error: ' . $mail->ErrorInfo;
   exit;
-} 
+} */
 
 
 
