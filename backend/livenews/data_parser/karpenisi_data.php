@@ -16,7 +16,7 @@ function updateDBLift($key,$value,$name,$id) {
   
     echo $name." --- ".$key." : ".$value."\t" ;
       
-      $reportMessage.= $name." --- ".$key." : ".$value."\t" ;
+      $reportMessage.= "Lift. ".$name." : ".((strcmp($value, "green")==0)? " Open ": " Closed"."\t") ;
       if (strcmp($value,"green") == 0) $open= 1;
       else $open=0;
 
@@ -32,9 +32,9 @@ function updateDBLift($key,$value,$name,$id) {
         $reportMessage.="SUCCESS";
       }
       
-      $reportMessage.="<br />\n";
+      $reportMessage.="\n";
 
-      echo "<br />\n";
+      echo "\n";
 }
 
 function updateDBTracks($key,$value,$name,$id) {
@@ -47,7 +47,7 @@ function updateDBTracks($key,$value,$name,$id) {
       if (strcmp($value,"green") == 0) $open= 1;
       else $open=0;
 
-    $query= "UPDATE track SET open=$open WHERE id=$id";
+      $reportMessage.= "Track. ".$name." : ".((strcmp($value, "green")==0)? " Open ": " Closed"."\t") ;
     echo "Query:".$query."\t";
 
     $result=mysql_query($query) or die(mysql_error());
@@ -59,7 +59,7 @@ function updateDBTracks($key,$value,$name,$id) {
         $reportMessage.="SUCCESS";
       }
       
-      $reportMessage.="<br />\n";
+      $reportMessage.="\n";
 
       echo "<br />\n";
 }
@@ -96,7 +96,7 @@ function updateDBSnows($snow_up,$snow_down,$temp) {
         $reportMessage.="SUCCESS";
       }
       
-      $reportMessage.="<br />\n";
+      $reportMessage.="\n";
 
       echo "<br />\n";
 }
@@ -177,7 +177,7 @@ function sendNotificationForLifts() {
   // Close connection
   curl_close($ch);
   echo "Notification result:".json_encode($result)." \n <br/>";
-  $reportMessage.="Notification result:".json_encode($result)."<br/>";
+  $reportMessage.="Notification result:".json_encode($result)."\n";
 }
 
 function sendNotificationForSnow() {
@@ -205,7 +205,7 @@ function sendNotificationForSnow() {
   // Close connection
   curl_close($ch);
   echo "Notification result:".json_encode($result)." \n <br/>";
-  $reportMessage.="Notification result:".json_encode($result)."<br/>";
+  $reportMessage.="Notification result:".json_encode($result)."\n";
 }
 
 
@@ -213,9 +213,13 @@ function sendNotificationForSnow() {
 
 getCurrentDataCondition();
 
-echo "Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. "\n <br/>";
-echo "Current snow_up:".$previous_snow_up." snow_down:".$previous_snow_down. " temp:".$previous_temp."\n <br/>" ;
-$reportMessage.="Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. '<br/>';
+$reportMessage.=" --------------------------------------------\n";
+echo "Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. "\n";
+echo "Current snow_up:".$previous_snow_up." snow_down:".$previous_snow_down. " temp:".$previous_temp."\n" ;
+$reportMessage.="Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. "\n";
+$reportMessage.=" --------------------------------------------\n";
+
+
 
 $snow_up= "N/A";
 $snow_down = "N/A";
@@ -258,14 +262,6 @@ foreach ( $elements as $element ) {
         $temp=$temp+1;
         $str1=$element->getAttribute('color');
         $index=$element->nodeValue;
-     
-        /*echo "Index: ";
-        echo $temp;
-        echo"Name :";
-  echo $index;
-  echo "  Condition :";
-  echo $str1;
-        echo '<br />';*/
 
      if ((strpos($index,'Τάκης Φλέγκας') !== false) && ($total_lifts==0)) {
             if (strcmp($str1,"green")==0){
@@ -321,17 +317,19 @@ $open_lifts = $total_lifts-$closed_lifts;
 
 echo "New condition. Lifts:".$open_lifts." Tracks:".$open_tracks."\n <br/>";
 echo "Previous lifts:".$previous_open_lifts. "  Total Lifts:".$total_lifts."<br/>";
-$reportMessage.="New condition. Lifts:".$open_lifts." Tracks:".$open_tracks."\n<br/>";
-$reportMessage.="Previous lifts:".$previous_open_lifts. "  Total Lifts:".$total_lifts."<br/>";
+$reportMessage.="New condition. Lifts:".$open_lifts." Tracks:".$open_tracks."\n";
+$reportMessage.="Previous lifts:".$previous_open_lifts. "  Total Lifts:".$total_lifts."\n";
+$reportMessage.=" --------------------------------------------\n";
+
 
 
 if (($previous_open_lifts != $total_lifts) && ($open_lifts == $total_lifts)) {
-  echo "Notification for LIFTS should now be sent \n <br/>";
-  $reportMessage.="Notification  for LIFTS should now be sent <br/>";
+  echo "Notification for LIFTS should now be sent \n";
+  $reportMessage.="Notification  for LIFTS should now be sent \n";
   sendNotificationForLifts();
 } else {
-  echo "Notification for LIFTS should NOT be sent \n <br/>";
-  $reportMessage.="Notification for LIFTS should NOT be sent <br/>";
+  echo "Notification for LIFTS should NOT be sent \n";
+  $reportMessage.="Notification for LIFTS should NOT be sent \n";
 }
 
 
@@ -359,16 +357,16 @@ foreach ($nodes as $node) {
    }*/
 }
 
-echo "Snow Up:".$snow_up." Snow down: ".$snow_down." Temp:".$temp."<br/>";
+echo "Snow Up:".$snow_up." Snow down: ".$snow_down." Temp:".$temp."\n";
 updateDBSnows($snow_up,$snow_down,$temp);
 
 if ($snow_up - $previous_snow_up > 30) {
   echo "Notification for SNOW should now be sent \n <br/>";
-  $reportMessage.="Notification for SNOW should now be sent <br/>";
+  $reportMessage.="Notification for SNOW should now be sent \n";
   sendNotificationForSnow();
 } else {
   echo "Notification for SNOW should NOT be sent \n <br/>";
-  $reportMessage.="Notification for SNOW should NOT be sent <br/>";
+  $reportMessage.="Notification for SNOW should NOT be sent \n";
 }
 
 $timezone = date_default_timezone_get();
