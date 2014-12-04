@@ -412,4 +412,11 @@ $date = date('m/d/Y h:i:s a', time());
 //  exit;
 //}
 
+// Creating a log file
+$logfile = fopen("karpenisi.log","w") or die("Unable to open file");
+fwrite($logfile,$date."\n\n");
+fwrite($logfile,$reportMessage);
+fclose($logfile);
+
+
 ?>
