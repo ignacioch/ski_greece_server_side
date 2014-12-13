@@ -1,9 +1,18 @@
 <?php
 //API implementation to come here
 
-$link = mysql_connect("db27.grserver.gr:3306","vima_admin","p2nas0qe");
-mysql_select_db("SkiGreece_BackUp");
+// Old server for 2013_14
+//$link = mysql_connect("db27.grserver.gr:3306","vima_admin","p2nas0qe");
+//mysql_select_db("SkiGreece_BackUp");
+
+//New server config for 2014_15
+$link = mysql_connect("db33.grserver.gr:3306","vima_demo_adm","p2nas0qe");
+mysql_select_db("SkiGreece_201415_Demo");
 mysql_set_charset("utf8");
+
+//SkiGreece_201415_Demo
+//db33.grserver.gr:3306
+//vima_demo_adm
 
 function stream($place) {
   if (strcmp($place,"all") == 0) {
