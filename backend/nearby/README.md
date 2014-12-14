@@ -6,9 +6,9 @@ This folder contains the script that provide with data the Nearby Screen in the 
 Files
 ------------
 
-	### api.php :   
+### api.php :   
 
-	** cmnd = stream :** returns a json object of all the businesses as fetched from the DB. Being called from the IOS/Android (client) application.
+* cmnd = stream : returns a json object of all the businesses as fetched from the DB. Being called from the IOS/Android (client) application.
 
 
 Database (in papaki)
