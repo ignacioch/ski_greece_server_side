@@ -8,7 +8,8 @@ Files
 
 ### api.php :   
 
-1. * cmnd = stream : * returns a json object of all the businesses as fetched from the DB. Being called from the IOS/Android (client) application.
+ * cmnd = stream : *   
+Returns a json object of all the businesses as fetched from the DB. Being called from the IOS/Android (client) application.
 
 
 Database (in papaki)
