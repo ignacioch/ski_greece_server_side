@@ -1,7 +1,7 @@
 <?php
 
-require 'PHPMailer/PHPMailerAutoload.php';
-require 'PHPMailer/class.phpmailer.php';
+//require 'PHPMailer/PHPMailerAutoload.php';
+//require 'PHPMailer/class.phpmailer.php';
 
 $link=mysql_connect("db27.grserver.gr:3306","skigreece","p2nas0qe");
 mysql_select_db("skigreecedata");
