@@ -14,3 +14,4 @@ Special Notes
 ### Karpenisi :
 
 We still have 4 lifts. Snowreport reports now 5, but we haven't added the 5th yet.
+
