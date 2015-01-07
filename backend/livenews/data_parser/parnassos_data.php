@@ -275,6 +275,7 @@ $closed_tracks=0;
 $temp=0;
 
 
+$startOfLiftsFound = false;
 $startOfTracksFound = false;
 
 foreach ( $elements as $element ) {
@@ -288,11 +289,11 @@ foreach ( $elements as $element ) {
     // Updating Lifts
 
   if (strcmp($index,"ΑΝΑΒΑΤΗΡΕΣ:")==0) {
-    $startOfTracksFound = true;
+    $startOfLiftsFound = true;
     //echo "Start of tracks found: ".$index."\n";
   }
 
-  if ($startOfTracksFound == true) {
+  if ($startOfLiftsFound == true) {
     if ((strpos($index,'Τηλεκαμπίνα') !== false) && ($total_lifts==0)) {
       if (strcmp($str1,"green")==0){
           $total_lifts=$total_lifts+1;
@@ -305,28 +306,31 @@ foreach ( $elements as $element ) {
           updateDBLift("lift_1",$cart["lift_1"],1);       
       }
     } else  if ((strpos($index,'Αίολος') !== false) && ($total_lifts==1)) {
+      // 2014-15 FIXME : Βάκχος does not exist anymore. Therefore it needs to stay closed. => update the counter by 2.
         if (strcmp($str1,"green")==0){
-          $total_lifts=$total_lifts+1;
+          $total_lifts=$total_lifts+2;
           $cart["lift_2"]=$str1;
           updateDBLift("lift_2",$cart["lift_2"],2);
         } else {
             $closed_lifts=$closed_lifts+1;
-            $total_lifts=$total_lifts+1; 
+            $total_lifts=$total_lifts+2; 
             $cart["lift_2"]="red";   
             updateDBLift("lift_2",$cart["lift_2"],2);   
         } 
-    } else  if ((strpos($index,'Βάκχος') !== false) && ($total_lifts==2)) {
-        if (strcmp($str1,"green")==0){
-          $total_lifts=$total_lifts+1;
-          $cart["lift_3"]=$str1;
-          updateDBLift("lift_3",$cart["lift_3"],3);
-        } else {
-            $closed_lifts=$closed_lifts+1;
-            $total_lifts=$total_lifts+1; 
-            $cart["lift_3"]="red";   
-            updateDBLift("lift_3",$cart["lift_3"],3);   
-      }
-    } else  if ((strpos($index,'Ηρακλής') !== false) && ($total_lifts==3)) {
+    } 
+      //else  if ((strpos($index,'Βάκχος') !== false) && ($total_lifts==2)) {
+      //  if (strcmp($str1,"green")==0){
+      //    $total_lifts=$total_lifts+2;
+      //    $cart["lift_3"]=$str1;
+      //    updateDBLift("lift_3",$cart["lift_3"],3);
+      //  } else {
+      //      $closed_lifts=$closed_lifts+1;
+      //      $total_lifts=$total_lifts+1; 
+      //      $cart["lift_3"]="red";   
+      //      updateDBLift("lift_3",$cart["lift_3"],3);   
+      //}
+      //}
+    else  if ((strpos($index,'Ηρακλής') !== false) && ($total_lifts==3)) {
         if (strcmp($str1,"green")==0){
         // 2014-15 FIXME : Τηλέμαχος does not exist anymore. Therefore it needs to stay closed. => update the counter by 2.
           $total_lifts=$total_lifts+2;
@@ -451,12 +455,19 @@ foreach ( $elements as $element ) {
           $cart["lift_14"]=$str1;  
           updateDBLift("lift_14",$cart["lift_14"],14);    
         } 
-   }  
+   } 
+  } 
 
    // done with lifts
    // go to tracks
 
-   if ((strpos($index,'Αφροδίτη Α (No 1)') !== false)  && ($total_tracks==0)){
+   if (strcmp($index,"   ΠΙΣΤΕΣ:")==0) {
+    $startOfTracksFound = true;
+    //echo "Start of tracks found: ".$index."\n";
+  }
+
+  if ($startOfTracksFound == true) {
+      if ((strpos($index,'Αφροδίτη Α (No 1)') !== false)  && ($total_tracks==0)){
       if (strcmp($str1,"green")==0){
         $total_tracks=$total_tracks+1;
         $cart["track_1"]="green";
@@ -704,14 +715,13 @@ foreach ( $elements as $element ) {
         updateDBTracks("track_19",$cart["track_19"],19);
       }
       
-   }  
+   }
   }
-
-       
-    
+  
 }
 
-// 2014-15 FIXME : Τηλέμαχος does not exist anymore. Therefore it needs to stay closed.
+// 2014-15 FIXME : Τηλέμαχος/Βακχος does not exist anymore. Therefore it needs to stay closed.
+updateDBLift("lift_3","red",3);
 updateDBLift("lift_5","red",5); 
 updateDBTracks("track_5","red",5); 
 
