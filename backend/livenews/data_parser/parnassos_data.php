@@ -278,431 +278,434 @@ $temp=0;
 $startOfTracksFound = false;
 
 foreach ( $elements as $element ) {
-        $temp=$temp+1;
-        $str1=$element->getAttribute('color');
-        $index=$element->nodeValue;
-     
-        //echo "Index: ".$temp."Name :".$index."-Condition :".$str1."\n";
+    
+    $temp=$temp+1;
+    $str1=$element->getAttribute('color');
+    $index=$element->nodeValue;
+ 
+    //echo "Index: ".$temp."Name :".$index."-Condition :".$str1."\n";
 
-      if (strcmp($index,"ΑΝΑΒΑΤΗΡΕΣ:")==0) {
-        $startOfTracksFound = true;
-        //echo "Start of tracks found: ".$index."\n";
-      }
+    // Updating Lifts
 
-      if ($startOfTracksFound == true) {
-        if ((strpos($index,'Τηλεκαμπίνα') !== false) && ($total_lifts==0)) {
-     // echo "Index: ".$index.":".$str1."\n";
+  if (strcmp($index,"ΑΝΑΒΑΤΗΡΕΣ:")==0) {
+    $startOfTracksFound = true;
+    //echo "Start of tracks found: ".$index."\n";
+  }
+
+  if ($startOfTracksFound == true) {
+    if ((strpos($index,'Τηλεκαμπίνα') !== false) && ($total_lifts==0)) {
       if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_1"]=$str1;
-       updateDBLift("lift_1",$cart["lift_1"],1);
-      } else
-          {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_1"]="red";
-       updateDBLift("lift_1",$cart["lift_1"],1);       
-          }
-      
-       } else  if ((strpos($index,'Αίολος') !== false) && ($total_lifts==1)) {
+          $total_lifts=$total_lifts+1;
+          $cart["lift_1"]=$str1;
+          updateDBLift("lift_1",$cart["lift_1"],1);
+      } else{
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_1"]="red";
+          updateDBLift("lift_1",$cart["lift_1"],1);       
+      }
+    } else  if ((strpos($index,'Αίολος') !== false) && ($total_lifts==1)) {
         if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_2"]=$str1;
-       updateDBLift("lift_2",$cart["lift_2"],2);
-      } else
-        {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_2"]="red";   
-       updateDBLift("lift_2",$cart["lift_2"],2);   
-          } 
-       } else  if ((strpos($index,'Βάκχος') !== false) && ($total_lifts==2)) {
-         if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_3"]=$str1;
-       updateDBLift("lift_3",$cart["lift_3"],3);
-      } else
-          {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_3"]="red";   
-       updateDBLift("lift_3",$cart["lift_3"],3);   
-          }
-       } else  if ((strpos($index,'Ηρακλής') !== false) && ($total_lifts==3)) {
+          $total_lifts=$total_lifts+1;
+          $cart["lift_2"]=$str1;
+          updateDBLift("lift_2",$cart["lift_2"],2);
+        } else {
+            $closed_lifts=$closed_lifts+1;
+            $total_lifts=$total_lifts+1; 
+            $cart["lift_2"]="red";   
+            updateDBLift("lift_2",$cart["lift_2"],2);   
+        } 
+    } else  if ((strpos($index,'Βάκχος') !== false) && ($total_lifts==2)) {
         if (strcmp($str1,"green")==0){
-          // 2014-15 FIXME : Τηλέμαχος does not exist anymore. Therefore it needs to stay closed. => update the counter by 2.
-         $total_lifts=$total_lifts+2;
-         $cart["lift_4"]=$str1;
-         updateDBLift("lift_4",$cart["lift_4"],4);
+          $total_lifts=$total_lifts+1;
+          $cart["lift_3"]=$str1;
+          updateDBLift("lift_3",$cart["lift_3"],3);
+        } else {
+            $closed_lifts=$closed_lifts+1;
+            $total_lifts=$total_lifts+1; 
+            $cart["lift_3"]="red";   
+            updateDBLift("lift_3",$cart["lift_3"],3);   
+      }
+    } else  if ((strpos($index,'Ηρακλής') !== false) && ($total_lifts==3)) {
+        if (strcmp($str1,"green")==0){
+        // 2014-15 FIXME : Τηλέμαχος does not exist anymore. Therefore it needs to stay closed. => update the counter by 2.
+          $total_lifts=$total_lifts+2;
+          $cart["lift_4"]=$str1;
+          updateDBLift("lift_4",$cart["lift_4"],4);
         } else {
           $closed_lifts=$closed_lifts+1;
-          // 2014-15 FIXME : Τηλέμαχος does not exist anymore. Therefore it needs to stay closed. => update the counter by 2.
+          // 2014-15 FIXME : Τηλέμαχος does not exist anymore. Therefore it needs to    stay closed. => update the counter by 2.
           $total_lifts=$total_lifts+2; 
           $cart["lift_4"]="red";   
-       updateDBLift("lift_4",$cart["lift_4"],4);   
-          }  
-       }
-      //else  if ((strpos($index,'Τηλέμαχος') !== false) && ($total_lifts==4)) {
-      // if (strcmp($str1,"green")==0){
-      //  $total_lifts=$total_lifts+1;
-      //$cart["lift_5"]=$str1;
-      //updateDBLift("lift_5",$cart["lift_5"],5);  
-      // else {
-      //      $closed_lifts=$closed_lifts+1;
-      //$total_lifts=$total_lifts+1; 
-      //$cart["lift_5"]="red";   
-      //updateDBLift("lift_5",$cart["lift_5"],5);   
-      //   }  
-      //} 
-      else  if ((strpos($index,'Περικλής') !== false) && ($total_lifts==5)) {
-         if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_6"]=$str1;
-       updateDBLift("lift_6",$cart["lift_6"],6);  
-      } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_6"]="red";     
-       updateDBLift("lift_6",$cart["lift_6"],6);   
-          }
-       } else  if ((strpos($index,'Οδυσσέας') !== false) && ($total_lifts==6)){
-              if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_7"]=$str1;
-       updateDBLift("lift_7",$cart["lift_7"],7);
-      } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_7"]=$str1;      
-       updateDBLift("lift_7",$cart["lift_7"],7);  
-          } 
-       } else  if ((strpos($index,'Ερμής') !== false) && ($total_lifts==7)) {
-        if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-         $cart["lift_8"]=$str1;
-         updateDBLift("lift_8",$cart["lift_8"],8);
+          updateDBLift("lift_4",$cart["lift_4"],4);   
+      }  
+    }
+  //else  if ((strpos($index,'Τηλέμαχος') !== false) && ($total_lifts==4)) {
+  // if (strcmp($str1,"green")==0){
+  //  $total_lifts=$total_lifts+1;
+  //$cart["lift_5"]=$str1;
+  //updateDBLift("lift_5",$cart["lift_5"],5);  
+  // else {
+  //      $closed_lifts=$closed_lifts+1;
+  //$total_lifts=$total_lifts+1; 
+  //$cart["lift_5"]="red";   
+  //updateDBLift("lift_5",$cart["lift_5"],5);   
+  //   }  
+  //} 
+    else  if ((strpos($index,'Περικλής') !== false) && ($total_lifts==5)) {
+      if (strcmp($str1,"green")==0){
+        $total_lifts=$total_lifts+1;
+        $cart["lift_6"]=$str1;
+        updateDBLift("lift_6",$cart["lift_6"],6);  
       } else {
           $closed_lifts=$closed_lifts+1;
           $total_lifts=$total_lifts+1; 
-          $cart["lift_8"]=$str1;  
-          updateDBLift("lift_8",$cart["lift_8"],8);    
-          }
-       } else  if ((strpos($index,'7 Φτερ') !== false) && ($total_lifts==8)) {
-          if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_9"]=$str1;
-       updateDBLift("lift_9",$cart["lift_9"],9);
+          $cart["lift_6"]="red";     
+          updateDBLift("lift_6",$cart["lift_6"],6);   
+      }
+   } else  if ((strpos($index,'Οδυσσέας') !== false) && ($total_lifts==6)){
+      if (strcmp($str1,"green")==0){
+        $total_lifts=$total_lifts+1;
+        $cart["lift_7"]=$str1;
+        updateDBLift("lift_7",$cart["lift_7"],7);
       } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_9"]=$str1; 
-       updateDBLift("lift_9",$cart["lift_9"],9);     
-          } 
-       } else  if ((strpos($index,'10 Φτερ') !== false) && ($total_lifts==9)) {
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_7"]=$str1;      
+          updateDBLift("lift_7",$cart["lift_7"],7);  
+      } 
+   } else  if ((strpos($index,'Ερμής') !== false) && ($total_lifts==7)) {
         if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_10"]=$str1;
-       updateDBLift("lift_10",$cart["lift_10"],10);
-      } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_10"]=$str1;  
-       updateDBLift("lift_10",$cart["lift_10"],10);    
-          } 
-       }else  if ((strpos($index,'14 Φτερ') !== false) && ($total_lifts==10)) {
-        if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_11"]=$str1;
-       updateDBLift("lift_11",$cart["lift_11"],11);
-      } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_11"]=$str1;      
-       updateDBLift("lift_11",$cart["lift_11"],11); 
-          } 
-       }else  if ((strpos($index,'6 Φτερ') !== false) && ($total_lifts==11)) {
-        if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_12"]=$str1;
-       updateDBLift("lift_12",$cart["lift_12"],12);
-      } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_12"]=$str1;  
-       updateDBLift("lift_12",$cart["lift_12"],12);    
-          } 
-       }else  if ((strpos($index,'Δίας') !== false) && ($total_lifts==12)) {
-        if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_13"]=$str1;
-       updateDBLift("lift_13",$cart["lift_13"],13);
-      } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_13"]=$str1;  
-       updateDBLift("lift_13",$cart["lift_13"],13);    
-          } 
-       }else  if ((strpos($index,'Baby lift 3') !== false) && ($total_lifts==13)) {
-           if (strcmp($str1,"green")==0){
-         $total_lifts=$total_lifts+1;
-       $cart["lift_14"]=$str1;
-       updateDBLift("lift_14",$cart["lift_14"],14);
-      } else {
-             $closed_lifts=$closed_lifts+1;
-       $total_lifts=$total_lifts+1; 
-       $cart["lift_14"]=$str1;  
-       updateDBLift("lift_14",$cart["lift_14"],14);    
-          } 
-       }else  if ((strpos($index,'Αφροδίτη Α (No 1)') !== false)  && ($total_tracks==0)){
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_1"]="green";
-            updateDBTracks("track_1",$cart["track_1"],1);  
-          } else {
-              $closed_tracks=$closed_tracks+1;
-              $total_tracks=$total_tracks+1;
-              $cart["track_1"]="red";   
-              $closed_tracks=$closed_tracks+1;
-              updateDBTracks("track_1",$cart["track_1"],1);         
-          }
-      } else  if ((strpos($index,'Βάκχος (No 2)') !== false) && ($total_tracks==1)) {
-          if (strcmp($str1,"green")==0){
-               $total_tracks=$total_tracks+1;
-               $cart["track_2"]="green";
-               updateDBTracks("track_2",$cart["track_2"],2);  
-            } else{
-             $closed_tracks=$closed_tracks+1;
-             $total_tracks=$total_tracks+1;
-             $cart["track_2"]="red";     
-             updateDBTracks("track_2",$cart["track_2"],2);        
-            } 
-       } else  if ((strpos($index,'Βάκχος A (No 2a)') !== false) && ($total_tracks==2)) {
-
-          if (strcmp($str1,"green")==0){
-              $total_tracks=$total_tracks+1;
-              $cart["track_3"]="green";
-              updateDBTracks("track_3",$cart["track_3"],3); 
-          } else {
-             $closed_tracks=$closed_tracks+1;
-             $total_tracks=$total_tracks+1;
-             $cart["track_3"]="red"; 
-             updateDBTracks("track_3",$cart["track_3"],3); 
-          }
-
-       } else  if ((strpos($index,'Βάκχος B (No 2b') !== false) && ($total_tracks==3)) {
-                     
-          if (strcmp($str1,"green")==0){
-            // 2014-15 FIXME : Τηλέμαχος (No 3) does not exist anymore. Therefore it needs to stay closed. => counter increased by 2
-             $total_tracks=$total_tracks+2;
-             $cart["track_4"]="green";
-             updateDBTracks("track_4",$cart["track_4"],4); 
+          $total_lifts=$total_lifts+1;
+          $cart["lift_8"]=$str1;
+          updateDBLift("lift_8",$cart["lift_8"],8);
         } else {
-             $closed_tracks=$closed_tracks+1;
-             // 2014-15 FIXME : Τηλέμαχος (No 3) does not exist anymore. Therefore it needs to stay closed. => counter increased by 2
-             $total_tracks=$total_tracks+2;
-             $cart["track_4"]="red"; 
-             updateDBTracks("track_4",$cart["track_4"],4);  
+            $closed_lifts=$closed_lifts+1;
+            $total_lifts=$total_lifts+1; 
+            $cart["lift_8"]=$str1;  
+            updateDBLift("lift_8",$cart["lift_8"],8);    
         }
+   } else  if ((strpos($index,'7 Φτερ') !== false) && ($total_lifts==8)) {
+        if (strcmp($str1,"green")==0){
+          $total_lifts=$total_lifts+1;
+          $cart["lift_9"]=$str1;
+          updateDBLift("lift_9",$cart["lift_9"],9);
+        } else {
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_9"]=$str1; 
+          updateDBLift("lift_9",$cart["lift_9"],9);     
+      } 
+   } else  if ((strpos($index,'10 Φτερ') !== false) && ($total_lifts==9)) {
+        if (strcmp($str1,"green")==0){
+          $total_lifts=$total_lifts+1;
+          $cart["lift_10"]=$str1;
+          updateDBLift("lift_10",$cart["lift_10"],10);
+        } else {
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_10"]=$str1;  
+          updateDBLift("lift_10",$cart["lift_10"],10);    
+      } 
+   } else  if ((strpos($index,'14 Φτερ') !== false) && ($total_lifts==10)) {
+        if (strcmp($str1,"green")==0){
+          $total_lifts=$total_lifts+1;
+          $cart["lift_11"]=$str1;
+          updateDBLift("lift_11",$cart["lift_11"],11);
+        } else {
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_11"]=$str1;      
+          updateDBLift("lift_11",$cart["lift_11"],11); 
+        } 
+   } else  if ((strpos($index,'6 Φτερ') !== false) && ($total_lifts==11)) {
+        if (strcmp($str1,"green")==0){
+          $total_lifts=$total_lifts+1;
+          $cart["lift_12"]=$str1;
+          updateDBLift("lift_12",$cart["lift_12"],12);
+        } else {
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_12"]=$str1;  
+          updateDBLift("lift_12",$cart["lift_12"],12);    
+      } 
+   } else  if ((strpos($index,'Δίας') !== false) && ($total_lifts==12)) {
+      if (strcmp($str1,"green")==0){
+        $total_lifts=$total_lifts+1;
+        $cart["lift_13"]=$str1;
+        updateDBLift("lift_13",$cart["lift_13"],13);
+      } else {
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_13"]=$str1;  
+          updateDBLift("lift_13",$cart["lift_13"],13);    
+      } 
+   } else  if ((strpos($index,'Baby lift 3') !== false) && ($total_lifts==13)) {
+        if (strcmp($str1,"green")==0){
+          $total_lifts=$total_lifts+1;
+          $cart["lift_14"]=$str1;
+          updateDBLift("lift_14",$cart["lift_14"],14);
+        } else {
+          $closed_lifts=$closed_lifts+1;
+          $total_lifts=$total_lifts+1; 
+          $cart["lift_14"]=$str1;  
+          updateDBLift("lift_14",$cart["lift_14"],14);    
+        } 
+   }  
 
-       } 
-       //else  if ((strpos($index,'Τηλέμαχος (No 3)') !== false) && ($total_tracks==//4)){
-//
-       //    if (strcmp($str1,"green")==0){
-       //     $total_tracks=$total_tracks+1;
-       //     $cart["track_5"]="green";
-       //     updateDBTracks("track_5",$cart["track_5"],5); 
-       //   } else {
-       //       $closed_tracks=$closed_tracks+1;
-       //       $total_tracks=$total_tracks+1;
-       //       $cart["track_5"]="red"; 
-       //       updateDBTracks("track_5",$cart["track_5"],5); 
-       //   }
-//
-       //} 
-       else  if ((strpos($index,'Αίολος (No 4)') !== false) && ($total_tracks==5)) {
+   // done with lifts
+   // go to tracks
 
-            if (strcmp($str1,"green")==0){
-              $total_tracks=$total_tracks+1;
-              $cart["track_6"]="green";
-              updateDBTracks("track_6",$cart["track_6"],6); 
-            } else {
-              $closed_tracks=$closed_tracks+1;
-              $total_tracks=$total_tracks+1;
-              $cart["track_6"]="red"; 
-              updateDBTracks("track_6",$cart["track_6"],6);  
-            }       
+   if ((strpos($index,'Αφροδίτη Α (No 1)') !== false)  && ($total_tracks==0)){
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_1"]="green";
+        updateDBTracks("track_1",$cart["track_1"],1);  
+      } else {
+          $closed_tracks=$closed_tracks+1;
+          $total_tracks=$total_tracks+1;
+          $cart["track_1"]="red";   
+          $closed_tracks=$closed_tracks+1;
+          updateDBTracks("track_1",$cart["track_1"],1);         
+      }
+  } else  if ((strpos($index,'Βάκχος (No 2)') !== false) && ($total_tracks==1)) {
+      if (strcmp($str1,"green")==0){
+           $total_tracks=$total_tracks+1;
+           $cart["track_2"]="green";
+           updateDBTracks("track_2",$cart["track_2"],2);  
+        } else{
+         $closed_tracks=$closed_tracks+1;
+         $total_tracks=$total_tracks+1;
+         $cart["track_2"]="red";     
+         updateDBTracks("track_2",$cart["track_2"],2);        
+        } 
+   } else  if ((strpos($index,'Βάκχος A (No 2a)') !== false) && ($total_tracks==2)) {
 
-       } else  if ((strpos($index,'Περικλής (No 5)') !== false) && ($total_tracks==6)) {
+      if (strcmp($str1,"green")==0){
+          $total_tracks=$total_tracks+1;
+          $cart["track_3"]="green";
+          updateDBTracks("track_3",$cart["track_3"],3); 
+      } else {
+         $closed_tracks=$closed_tracks+1;
+         $total_tracks=$total_tracks+1;
+         $cart["track_3"]="red"; 
+         updateDBTracks("track_3",$cart["track_3"],3); 
+      }
 
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_7"]="green";
-            updateDBTracks("track_7",$cart["track_7"],7);
-          }  else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_7"]="red";
-            updateDBTracks("track_7",$cart["track_7"],7);
-          }         
-           
-       } else  if ((strpos($index,'Ηνίοχος (No 6)') !== false) && ($total_tracks==7)) {
+   } else  if ((strpos($index,'Βάκχος B (No 2b') !== false) && ($total_tracks==3)) {
+                 
+      if (strcmp($str1,"green")==0){
+        // 2014-15 FIXME : Τηλέμαχος (No 3) does not exist anymore. Therefore it needs to stay closed. => counter increased by 2
+         $total_tracks=$total_tracks+2;
+         $cart["track_4"]="green";
+         updateDBTracks("track_4",$cart["track_4"],4); 
+    } else {
+         $closed_tracks=$closed_tracks+1;
+         // 2014-15 FIXME : Τηλέμαχος (No 3) does not exist anymore. Therefore it needs to stay closed. => counter increased by 2
+         $total_tracks=$total_tracks+2;
+         $cart["track_4"]="red"; 
+         updateDBTracks("track_4",$cart["track_4"],4);  
+    }
 
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_8"]="green";
-            updateDBTracks("track_8",$cart["track_8"],8);
-          } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_8"]="red";
-            updateDBTracks("track_8",$cart["track_8"],8);
-          }
-          
-       } else  if ((strpos($index,'Ηρα Α (No 7)') !== false) && ($total_tracks==8)) {
+   } 
+   //else  if ((strpos($index,'Τηλέμαχος (No 3)') !== false) && ($total_tracks==//4)){
 
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_9"]="green";
-            updateDBTracks("track_9",$cart["track_9"],9);
-          } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_9"]="red"; 
-            updateDBTracks("track_9",$cart["track_9"],9);
-          }
-            
-       } else  if ((strpos($index,'Ηρακλής (No 8)') !== false) && ($total_tracks==9)) {
+   //    if (strcmp($str1,"green")==0){
+   //     $total_tracks=$total_tracks+1;
+   //     $cart["track_5"]="green";
+   //     updateDBTracks("track_5",$cart["track_5"],5); 
+   //   } else {
+   //       $closed_tracks=$closed_tracks+1;
+   //       $total_tracks=$total_tracks+1;
+   //       $cart["track_5"]="red"; 
+   //       updateDBTracks("track_5",$cart["track_5"],5); 
+   //   }
 
-           if (strcmp($str1,"green")==0){
-              $total_tracks=$total_tracks+1;
-              $cart["track_10"]="green";
-              updateDBTracks("track_10",$cart["track_10"],10);
-            } else {
-              $closed_tracks=$closed_tracks+1;
-              $total_tracks=$total_tracks+1;
-              $cart["track_10"]="red";   
-              updateDBTracks("track_10",$cart["track_10"],10);
-            }
-           
-       } else  if ((strpos($index,'Οδυσσέας (No 9)') !== false) && ($total_tracks==10)){
-
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_11"]="green";
-            updateDBTracks("track_11",$cart["track_11"],11);
-          } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_11"]="red";
-            updateDBTracks("track_11",$cart["track_11"],11);
-          }
- 
-       } else  if ((strpos($index,'Παν (No 10)') !== false) && ($total_tracks==11)){
+   //} 
+   else  if ((strpos($index,'Αίολος (No 4)') !== false) && ($total_tracks==5)) {
 
         if (strcmp($str1,"green")==0){
           $total_tracks=$total_tracks+1;
-          $cart["track_12"]="green";
-          updateDBTracks("track_12",$cart["track_12"],12);
+          $cart["track_6"]="green";
+          updateDBTracks("track_6",$cart["track_6"],6); 
         } else {
           $closed_tracks=$closed_tracks+1;
           $total_tracks=$total_tracks+1;
-          $cart["track_12"]="red"; 
-          updateDBTracks("track_12",$cart["track_12"],12);
+          $cart["track_6"]="red"; 
+          updateDBTracks("track_6",$cart["track_6"],6);  
+        }       
+
+   } else  if ((strpos($index,'Περικλής (No 5)') !== false) && ($total_tracks==6)) {
+
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_7"]="green";
+        updateDBTracks("track_7",$cart["track_7"],7);
+      }  else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_7"]="red";
+        updateDBTracks("track_7",$cart["track_7"],7);
+      }         
+       
+   } else  if ((strpos($index,'Ηνίοχος (No 6)') !== false) && ($total_tracks==7)) {
+
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_8"]="green";
+        updateDBTracks("track_8",$cart["track_8"],8);
+      } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_8"]="red";
+        updateDBTracks("track_8",$cart["track_8"],8);
+      }
+      
+   } else  if ((strpos($index,'Ηρα Α (No 7)') !== false) && ($total_tracks==8)) {
+
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_9"]="green";
+        updateDBTracks("track_9",$cart["track_9"],9);
+      } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_9"]="red"; 
+        updateDBTracks("track_9",$cart["track_9"],9);
+      }
+        
+   } else  if ((strpos($index,'Ηρακλής (No 8)') !== false) && ($total_tracks==9)) {
+
+       if (strcmp($str1,"green")==0){
+          $total_tracks=$total_tracks+1;
+          $cart["track_10"]="green";
+          updateDBTracks("track_10",$cart["track_10"],10);
+        } else {
+          $closed_tracks=$closed_tracks+1;
+          $total_tracks=$total_tracks+1;
+          $cart["track_10"]="red";   
+          updateDBTracks("track_10",$cart["track_10"],10);
         }
        
-       } else  if ((strpos($index,'Ερμής (No 11)') !== false) && ($total_tracks==12)){
+   } else  if ((strpos($index,'Οδυσσέας (No 9)') !== false) && ($total_tracks==10)){
 
-        if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_13"]="green";
-            updateDBTracks("track_13",$cart["track_13"],13);
-        } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_13"]="red";  
-            updateDBTracks("track_13",$cart["track_13"],13);
-        }
-
-       } else  if ((strpos($index,'Δηιανείρα (No 12)') !== false) && ($total_tracks==13)){
-
-        if (strcmp($str1,"green")==0){
-          $total_tracks=$total_tracks+1;
-          $cart["track_14"]="green";
-          updateDBTracks("track_14",$cart["track_14"],14);
-        } else {
-          $closed_tracks=$closed_tracks+1;
-          $total_tracks=$total_tracks+1;
-          $cart["track_14"]="red";
-          updateDBTracks("track_14",$cart["track_14"],14);
-        }
-           
-       } else  if ((strpos($index,'Δίας (No 13)') !== false) && ($total_tracks==14)){
-
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_15"]="green";
-            updateDBTracks("track_15",$cart["track_15"],15);
-          } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_15"]="red"; 
-            updateDBTracks("track_15",$cart["track_15"],15);
-          }
-
-       } else  if ((strpos($index,'Πυθία (No 14)') !== false) && ($total_tracks==15)){
-
-        if (strcmp($str1,"green")==0){
-          $total_tracks=$total_tracks+1;
-          $cart["track_16"]="green";
-          updateDBTracks("track_16",$cart["track_16"],16);
-        } else {
-          $closed_tracks=$closed_tracks+1;
-          $total_tracks=$total_tracks+1;
-          $cart["track_16"]="red"; 
-          updateDBTracks("track_16",$cart["track_16"],16);
-        }
-          
-       } else  if ((strpos($index,'Πυθία Α (No 14a)') !== false) && ($total_tracks==16)){
-
-        if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_17"]="green";
-            updateDBTracks("track_17",$cart["track_17"],17);
-        } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_17"]="red";   
-            updateDBTracks("track_17",$cart["track_17"],17); 
-        }
-
-       } else  if ((strpos($index,'Ski-Route Σαχάρα') !== false) && ($total_tracks==17)){
-           
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_18"]="green";
-            updateDBTracks("track_18",$cart["track_18"],18);
-          } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_18"]="red"; 
-            updateDBTracks("track_18",$cart["track_18"],18);
-          }
-           
-       } else  if ((strpos($index,'Snowboard Park') !== false) && ($total_tracks==18)){
-           
-          if (strcmp($str1,"green")==0){
-            $total_tracks=$total_tracks+1;
-            $cart["track_19"]="green";
-            updateDBTracks("track_19",$cart["track_19"],19);
-          } else {
-            $closed_tracks=$closed_tracks+1;
-            $total_tracks=$total_tracks+1;
-            $cart["track_19"]="red"; 
-            updateDBTracks("track_19",$cart["track_19"],19);
-          }
-          
-       }  
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_11"]="green";
+        updateDBTracks("track_11",$cart["track_11"],11);
+      } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_11"]="red";
+        updateDBTracks("track_11",$cart["track_11"],11);
       }
+
+   } else  if ((strpos($index,'Παν (No 10)') !== false) && ($total_tracks==11)){
+
+    if (strcmp($str1,"green")==0){
+      $total_tracks=$total_tracks+1;
+      $cart["track_12"]="green";
+      updateDBTracks("track_12",$cart["track_12"],12);
+    } else {
+      $closed_tracks=$closed_tracks+1;
+      $total_tracks=$total_tracks+1;
+      $cart["track_12"]="red"; 
+      updateDBTracks("track_12",$cart["track_12"],12);
+    }
+   
+   } else  if ((strpos($index,'Ερμής (No 11)') !== false) && ($total_tracks==12)){
+
+    if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_13"]="green";
+        updateDBTracks("track_13",$cart["track_13"],13);
+    } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_13"]="red";  
+        updateDBTracks("track_13",$cart["track_13"],13);
+    }
+
+   } else  if ((strpos($index,'Δηιανείρα (No 12)') !== false) && ($total_tracks==13)){
+
+    if (strcmp($str1,"green")==0){
+      $total_tracks=$total_tracks+1;
+      $cart["track_14"]="green";
+      updateDBTracks("track_14",$cart["track_14"],14);
+    } else {
+      $closed_tracks=$closed_tracks+1;
+      $total_tracks=$total_tracks+1;
+      $cart["track_14"]="red";
+      updateDBTracks("track_14",$cart["track_14"],14);
+    }
+       
+   } else  if ((strpos($index,'Δίας (No 13)') !== false) && ($total_tracks==14)){
+
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_15"]="green";
+        updateDBTracks("track_15",$cart["track_15"],15);
+      } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_15"]="red"; 
+        updateDBTracks("track_15",$cart["track_15"],15);
+      }
+
+   } else  if ((strpos($index,'Πυθία (No 14)') !== false) && ($total_tracks==15)){
+
+    if (strcmp($str1,"green")==0){
+      $total_tracks=$total_tracks+1;
+      $cart["track_16"]="green";
+      updateDBTracks("track_16",$cart["track_16"],16);
+    } else {
+      $closed_tracks=$closed_tracks+1;
+      $total_tracks=$total_tracks+1;
+      $cart["track_16"]="red"; 
+      updateDBTracks("track_16",$cart["track_16"],16);
+    }
+      
+   } else  if ((strpos($index,'Πυθία Α (No 14a)') !== false) && ($total_tracks==16)){
+
+    if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_17"]="green";
+        updateDBTracks("track_17",$cart["track_17"],17);
+    } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_17"]="red";   
+        updateDBTracks("track_17",$cart["track_17"],17); 
+    }
+
+   } else  if ((strpos($index,'Ski-Route Σαχάρα') !== false) && ($total_tracks==17)){
+       
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_18"]="green";
+        updateDBTracks("track_18",$cart["track_18"],18);
+      } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_18"]="red"; 
+        updateDBTracks("track_18",$cart["track_18"],18);
+      }
+       
+   } else  if ((strpos($index,'Snowboard Park') !== false) && ($total_tracks==18)){
+       
+      if (strcmp($str1,"green")==0){
+        $total_tracks=$total_tracks+1;
+        $cart["track_19"]="green";
+        updateDBTracks("track_19",$cart["track_19"],19);
+      } else {
+        $closed_tracks=$closed_tracks+1;
+        $total_tracks=$total_tracks+1;
+        $cart["track_19"]="red"; 
+        updateDBTracks("track_19",$cart["track_19"],19);
+      }
+      
+   }  
+  }
 
        
     
