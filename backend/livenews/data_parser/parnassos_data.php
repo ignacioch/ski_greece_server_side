@@ -794,7 +794,7 @@ $date = date('m/d/Y h:i:s a', time());
 //  exit;
 //}
 
-$logfile = fopen("karpenisi.log","w") or die("Unable to open file");
+$logfile = fopen("parnassos.log","w") or die("Unable to open file");
 fwrite($logfile,$date."\n\n");
 fwrite($logfile,$reportMessage);
 fclose($logfile);
