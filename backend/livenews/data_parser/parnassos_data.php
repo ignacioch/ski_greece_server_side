@@ -273,20 +273,25 @@ $closed_lifts=0;
 $total_tracks=0;
 $closed_tracks=0;
 $temp=0;
+
+
+$startOfTracksFound = false;
+
 foreach ( $elements as $element ) {
         $temp=$temp+1;
         $str1=$element->getAttribute('color');
         $index=$element->nodeValue;
      
-        /*echo "Index: ";
-        echo $temp;
-        echo"Name :";
-  echo $index;
-  echo "  Condition :";
-  echo $str1;
-        echo '<br />';*/
+        //echo "Index: ".$temp."Name :".$index."-Condition :".$str1."\n";
 
-     if ((strpos($index,'Τηλεκαμπίνα') !== false) && ($total_lifts==0)) {
+      if (strcmp($index,"ΑΝΑΒΑΤΗΡΕΣ:")==0) {
+        $startOfTracksFound = true;
+        //echo "Start of tracks found: ".$index."\n";
+      }
+
+      if ($startOfTracksFound == true) {
+        if ((strpos($index,'Τηλεκαμπίνα') !== false) && ($total_lifts==0)) {
+     // echo "Index: ".$index.":".$str1."\n";
       if (strcmp($str1,"green")==0){
          $total_lifts=$total_lifts+1;
        $cart["lift_1"]=$str1;
@@ -696,7 +701,10 @@ foreach ( $elements as $element ) {
             updateDBTracks("track_19",$cart["track_19"],19);
           }
           
-       }    
+       }  
+      }
+
+       
     
 }
 
