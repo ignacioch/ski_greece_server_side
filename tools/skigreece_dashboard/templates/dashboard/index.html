@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Ski Greece Dashboard</title>
+    </head>
+
+    <body>
+        <h1>Rango says...</h1>
+        {% if skicenters %}
+            <ul>
+                {% for center in skicenters %}
+                <li>{{ center.englishname }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>There are no categories present.</strong>
+        {% endif %}
+        <a href="/dashboard/about/">About</a><br />
+    </body>
+
+</html>

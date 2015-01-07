@@ -2,8 +2,8 @@
 
 <?php
 
-require 'PHPMailer/PHPMailerAutoload.php';
-require 'PHPMailer/class.phpmailer.php';
+#require 'PHPMailer/PHPMailerAutoload.php';
+#require 'PHPMailer/class.phpmailer.php';
 
 $reportMessage="";
 
@@ -166,8 +166,8 @@ function sendNotificationForLifts() {
 
   // Close connection
   curl_close($ch);
-  echo "Notification result:".json_encode($result)."<br/>";
-  $reportMessage.="Notification result:".json_encode($result)."<br/>";
+  echo "Notification result:".json_encode($result)."\n";
+  $reportMessage.="Notification result:".json_encode($result)."\n";
 }
 
 function sendNotificationForSnow() {
@@ -194,8 +194,8 @@ function sendNotificationForSnow() {
 
   // Close connection
   curl_close($ch);
-  echo "Notification result:".json_encode($result)."<br/>";
-  $reportMessage.="Notification result:".json_encode($result)."<br/>";
+  echo "Notification result:".json_encode($result)."\n";
+  $reportMessage.="Notification result:".json_encode($result)."\n";
 }
 
 
@@ -269,17 +269,17 @@ echo "-----------<br />";
 // close the previous DB connection
 mysql_close($link);
 
-echo "Opening New Database <br/>";
+echo "Opening New Database \n";
 $link=mysql_connect("db27.grserver.gr:3306","skigreece","p2nas0qe");
 mysql_select_db("skigreecedata");
 
 getCurrentDataCondition();
 
-echo "Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. '<br/>';
-echo "Current snow_up:".$previous_snow_up." snow_down:".$previous_snow_down. " temp:".$previous_temp."<br/>" ;
-echo "Function returned. Current snow up: ".$previous_snow_up." Current snow down: ".$previous_snow_down. '<br/>';
-$reportMessage.="Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. '<br/>';
-$reportMessage.="Function returned. Current snow up: ".$previous_snow_up." Current snow down: ".$previous_snow_down. '<br/>';
+echo "Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. "\n";
+echo "Current snow_up:".$previous_snow_up." snow_down:".$previous_snow_down. " temp:".$previous_temp."\n" ;
+echo "Function returned. Current snow up: ".$previous_snow_up." Current snow down: ".$previous_snow_down. "\n";
+$reportMessage.="Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. "\n";
+$reportMessage.="Function returned. Current snow up: ".$previous_snow_up." Current snow down: ".$previous_snow_down. "\n";
 
 
 // debug print the data
@@ -303,28 +303,28 @@ foreach ($lifts as $key => $value) {
 }
 
 if (($previous_open_lifts != $total_lifts) && ($open_lifts == $total_lifts)) {
-  echo "Notification for LIFTS should now be sent <br/>";
-  $reportMessage.="Notification  for LIFTS should now be sent <br/>";
+  echo "Notification for LIFTS should now be sent \n";
+  $reportMessage.="Notification  for LIFTS should now be sent \n";
   sendNotificationForLifts();
 } else {
-  echo "Notification for LIFTS should NOT be sent <br/>";
-  $reportMessage.="Notification for LIFTS should NOT be sent <br/>";
+  echo "Notification for LIFTS should NOT be sent \n";
+  $reportMessage.="Notification for LIFTS should NOT be sent \n";
 }
 
-echo "-----------<br />";
+echo "-----------<br /> \n";
 
 foreach ($weather as $key => $value) {
     echo "Key: $key; Value: $value <br />\n";
     if (strpos($key, 'Ύψος τελευταίας χιονόπτωσης') !== false ) {
       $number = preg_replace("/[^0-9]/", '', $value); // ditch anything that is not a number 
-      echo "Last Snowfall :".$number."<br/>";
+      echo "Last Snowfall :".$number."\n";
       /*if ($number > 30) {
-        echo "Notification for SNOW should now be sent <br/>";
-        $reportMessage.="Notification for SNOW should now be sent <br/>";
+        echo "Notification for SNOW should now be sent \n";
+        $reportMessage.="Notification for SNOW should now be sent \n";
         sendNotificationForSnow();
       } else {
-        echo "Notification for SNOW should NOT be sent <br/>";
-        $reportMessage.="Notification for SNOW should NOT be sent <br/>";
+        echo "Notification for SNOW should NOT be sent \n";
+        $reportMessage.="Notification for SNOW should NOT be sent \n";
       }*/
     }
 
@@ -332,11 +332,11 @@ foreach ($weather as $key => $value) {
       $myArray = explode('-', $value);
       $snow_b_array =explode(':', $myArray[0]);
       $snow_b_number = preg_replace("/[^0-9]/", '', $snow_b_array[1]); // ditch anything that is not a number 
-      echo "Snow base: ".$snow_b_number."<br/>";
+      echo "Snow base: ".$snow_b_number."\n";
 
       $snow_u_array =explode(':', $myArray[2]);
       $snow_u_number = preg_replace("/[^0-9]/", '', $snow_u_array[1]); // ditch anything that is not a number 
-      echo "Snow Up: ".$snow_u_number."<br/>";      
+      echo "Snow Up: ".$snow_u_number."\n";      
     }
 
     if (strpos($key, 'Θερμοκρασία') !== false) {      
@@ -344,21 +344,21 @@ foreach ($weather as $key => $value) {
      preg_match_all("/-?[0-9]+/", $value, $matches);
       //var_dump($matches[0]);
      $temp_number= implode(' ', $matches[0]);
-     echo "Temperature : ". $value . "Number : ".$temp_number."<br/>";
+     echo "Temperature : ". $value . "Number : ".$temp_number."\n";
     }
 
 }
 
-echo "Snow Up:".$snow_u_number." Snow down: ".$snow_b_number." Temp:".$temp_number."<br/>";
+echo "Snow Up:".$snow_u_number." Snow down: ".$snow_b_number." Temp:".$temp_number."\n";
 updateDBSnows($snow_u_number,$snow_b_number,$temp_number);
 
 if ($snow_u_number - $previous_snow_up > 30) {
-  echo "Notification for SNOW should now be sent <br/>";
-  $reportMessage.="Notification for SNOW should now be sent <br/>";
+  echo "Notification for SNOW should now be sent \n";
+  $reportMessage.="Notification for SNOW should now be sent \n";
   sendNotificationForSnow();
 } else {
-  echo "Notification for SNOW should NOT be sent <br/>";
-  $reportMessage.="Notification for SNOW should NOT be sent <br/>";
+  echo "Notification for SNOW should NOT be sent \n";
+  $reportMessage.="Notification for SNOW should NOT be sent ";
 }
 
 
@@ -367,41 +367,46 @@ echo "The current server timezone is: " . $timezone;
 date_default_timezone_set($timezone);
 $date = date('m/d/Y h:i:s a', time());
 
-$mail = new PHPMailer;
+//$mail = new PHPMailer;
+//
+//$mail->isSMTP();                                      // Set mailer to use SMTP
+////$mail->Host = 'smtp.gmail.com';  // Specify main and backup server
+//$mail->Host = 'localhost';  // Specify main and backup server
+//$mail->SMTPAuth = true;                               // Enable SMTP //authentication
+//$mail->Username = 'info@vimateam.gr';                            // SMTP username
+//$mail->Password = 'marios1989';                           // SMTP password
+//$mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' //also        
+//
+//$mail->From = 'info@vimateam.gr';
+//$mail->FromName = 'SkiGreece Kalavryta Automatic Data';
+////$mail->addAddress('ankit_verma@example.net', 'ankit verma');  // Add a recipient
+//$mail->addAddress('skigreece@gmail.com');               // Name is optional
+////$mail->addAddress('ign_ch@hotmail.com');               // Name is optional
+////$mail->addReplyTo('info@example.com', 'Information');
+////$mail->addCC('ign_ch@hotmail.com');
+////$mail->addBCC('bcc@example.com');
+//
+//$mail->CharSet="utf-8";
+//
+//$mail->WordWrap = 1500;                                 // Set word wrap to 50 //characters
+////$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+////$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+//$mail->isHTML(true);                                  // Set email format to HTML
+//
+//$mail->Subject = "Kalavryta Conditions Update :".$date;
+//$mail->Body    = $reportMessage;
+//
+//if(!$mail->send()) {
+//  echo 'Message could not be sent.';
+//  echo 'Mailer Error: ' . $mail->ErrorInfo;
+//  exit;
+//} 
 
-$mail->isSMTP();                                      // Set mailer to use SMTP
-//$mail->Host = 'smtp.gmail.com';  // Specify main and backup server
-$mail->Host = 'localhost';  // Specify main and backup server
-$mail->SMTPAuth = true;                               // Enable SMTP authentication
-$mail->Username = 'info@vimateam.gr';                            // SMTP username
-$mail->Password = 'marios1989';                           // SMTP password
-$mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also        
-
-$mail->From = 'info@vimateam.gr';
-$mail->FromName = 'SkiGreece Kalavryta Automatic Data';
-//$mail->addAddress('ankit_verma@example.net', 'ankit verma');  // Add a recipient
-$mail->addAddress('skigreece@gmail.com');               // Name is optional
-//$mail->addAddress('ign_ch@hotmail.com');               // Name is optional
-//$mail->addReplyTo('info@example.com', 'Information');
-//$mail->addCC('ign_ch@hotmail.com');
-//$mail->addBCC('bcc@example.com');
-
-$mail->CharSet="utf-8";
-
-$mail->WordWrap = 1500;                                 // Set word wrap to 50 characters
-//$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-//$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-$mail->isHTML(true);                                  // Set email format to HTML
-
-$mail->Subject = "Kalavryta Conditions Update :".$date;
-$mail->Body    = $reportMessage;
-
-if(!$mail->send()) {
-  echo 'Message could not be sent.';
-  echo 'Mailer Error: ' . $mail->ErrorInfo;
-  exit;
-} 
-
+// Creating a log file
+$logfile = fopen("kalavryta.log","w") or die("Unable to open file");
+fwrite($logfile,$date."\n\n");
+fwrite($logfile,$reportMessage);
+fclose($logfile);
 
 
 

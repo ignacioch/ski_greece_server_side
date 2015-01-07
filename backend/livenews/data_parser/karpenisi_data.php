@@ -2,11 +2,14 @@
 
 <?php
 
-require 'PHPMailer/PHPMailerAutoload.php';
-require 'PHPMailer/class.phpmailer.php';
+
+//include 'PHPMailer/PHPMailerAutoload.php';
+//include 'PHPMailer/class.phpmailer.php';
 
 $link=mysql_connect("db27.grserver.gr:3306","skigreece","p2nas0qe");
 mysql_select_db("skigreecedata");
+
+//updates the Lift with the current id.
 
 function updateDBLift($key,$value,$name,$id) {
 
@@ -14,7 +17,7 @@ function updateDBLift($key,$value,$name,$id) {
   
     echo $name." --- ".$key." : ".$value."\t" ;
       
-      $reportMessage.= $name." --- ".$key." : ".$value."\t" ;
+      $reportMessage.= "Lift. ".$name." : ".((strcmp($value, "green")==0)? " Open ": " Closed"."\t") ;
       if (strcmp($value,"green") == 0) $open= 1;
       else $open=0;
 
@@ -26,13 +29,13 @@ function updateDBLift($key,$value,$name,$id) {
           echo "ERROR: Database could not be updated";
           $reportMessage.="ERROR: Database could not be updated";
       } else {
-        echo "SUCCESSFUL";
+        echo "SUCCESSFUL ";
         $reportMessage.="SUCCESS";
       }
       
-      $reportMessage.="<br />\n";
+      $reportMessage.="\n";
 
-      echo "<br />\n";
+      echo "\n";
 }
 
 function updateDBTracks($key,$value,$name,$id) {
@@ -45,7 +48,7 @@ function updateDBTracks($key,$value,$name,$id) {
       if (strcmp($value,"green") == 0) $open= 1;
       else $open=0;
 
-    $query= "UPDATE track SET open=$open WHERE id=$id";
+      $reportMessage.= "Track. ".$name." : ".((strcmp($value, "green")==0)? " Open ": " Closed"."\t") ;
     echo "Query:".$query."\t";
 
     $result=mysql_query($query) or die(mysql_error());
@@ -57,7 +60,7 @@ function updateDBTracks($key,$value,$name,$id) {
         $reportMessage.="SUCCESS";
       }
       
-      $reportMessage.="<br />\n";
+      $reportMessage.="\n";
 
       echo "<br />\n";
 }
@@ -94,7 +97,7 @@ function updateDBSnows($snow_up,$snow_down,$temp) {
         $reportMessage.="SUCCESS";
       }
       
-      $reportMessage.="<br />\n";
+      $reportMessage.="\n";
 
       echo "<br />\n";
 }
@@ -129,7 +132,6 @@ function getCurrentDataCondition() {
 
     $lifts_array = $json['lifts'];
     for($i=0; $i<count($lifts_array); $i++) {
-      //echo " ".$i.": Previous Lift Condition is " . $lifts_array[$i]["open"] . "<BR>";
       if ($lifts_array[$i]["open"] == 1) {
         $previous_open_lifts ++;
       } 
@@ -175,8 +177,8 @@ function sendNotificationForLifts() {
 
   // Close connection
   curl_close($ch);
-  echo "Notification result:".json_encode($result)."<br/>";
-  $reportMessage.="Notification result:".json_encode($result)."<br/>";
+  echo "Notification result:".json_encode($result)." \n <br/>";
+  $reportMessage.="Notification result:".json_encode($result)."\n";
 }
 
 function sendNotificationForSnow() {
@@ -203,8 +205,8 @@ function sendNotificationForSnow() {
 
   // Close connection
   curl_close($ch);
-  echo "Notification result:".json_encode($result)."<br/>";
-  $reportMessage.="Notification result:".json_encode($result)."<br/>";
+  echo "Notification result:".json_encode($result)." \n <br/>";
+  $reportMessage.="Notification result:".json_encode($result)."\n";
 }
 
 
@@ -212,9 +214,13 @@ function sendNotificationForSnow() {
 
 getCurrentDataCondition();
 
-echo "Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. '<br/>';
-echo "Current snow_up:".$previous_snow_up." snow_down:".$previous_snow_down. " temp:".$previous_temp."<br/>" ;
-$reportMessage.="Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. '<br/>';
+$reportMessage.=" --------------------------------------------\n";
+echo "Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. "\n";
+echo "Current snow_up:".$previous_snow_up." snow_down:".$previous_snow_down. " temp:".$previous_temp."\n" ;
+$reportMessage.="Function returned. Current open tracks: ".$previous_open_tracks." Current open lifts: ".$previous_open_lifts. "\n";
+$reportMessage.=" --------------------------------------------\n";
+
+
 
 $snow_up= "N/A";
 $snow_down = "N/A";
@@ -257,14 +263,6 @@ foreach ( $elements as $element ) {
         $temp=$temp+1;
         $str1=$element->getAttribute('color');
         $index=$element->nodeValue;
-     
-        /*echo "Index: ";
-        echo $temp;
-        echo"Name :";
-  echo $index;
-  echo "  Condition :";
-  echo $str1;
-        echo '<br />';*/
 
      if ((strpos($index,'Τάκης Φλέγκας') !== false) && ($total_lifts==0)) {
             if (strcmp($str1,"green")==0){
@@ -288,7 +286,7 @@ foreach ( $elements as $element ) {
         }
         updateDBLift("lift_2",$cart["lift_2"],'Θησέας',65);
       
-       } else  if ((strpos($index,'Ηρακλής 1') !== false) && ($total_lifts==2)) {
+       } else  if ((strpos($index,'Ηρακλής') !== false) && ($total_lifts==2)) {
             if (strcmp($str1,"green")==0){
             $total_lifts=$total_lifts+1;
             $cart["lift_3"]=$str1;
@@ -318,19 +316,21 @@ foreach ( $elements as $element ) {
 $open_tracks = $total_tracks-$closed_tracks;
 $open_lifts = $total_lifts-$closed_lifts;
 
-echo "New condition. Lifts:".$open_lifts." Tracks:".$open_tracks.'<br/>';
+echo "New condition. Lifts:".$open_lifts." Tracks:".$open_tracks."\n <br/>";
 echo "Previous lifts:".$previous_open_lifts. "  Total Lifts:".$total_lifts."<br/>";
-$reportMessage.="New condition. Lifts:".$open_lifts." Tracks:".$open_tracks.'<br/>';
-$reportMessage.="Previous lifts:".$previous_open_lifts. "  Total Lifts:".$total_lifts."<br/>";
+$reportMessage.="New condition. Lifts:".$open_lifts." Tracks:".$open_tracks."\n";
+$reportMessage.="Previous lifts:".$previous_open_lifts. "  Total Lifts:".$total_lifts."\n";
+$reportMessage.=" --------------------------------------------\n";
+
 
 
 if (($previous_open_lifts != $total_lifts) && ($open_lifts == $total_lifts)) {
-  echo "Notification for LIFTS should now be sent <br/>";
-  $reportMessage.="Notification  for LIFTS should now be sent <br/>";
+  echo "Notification for LIFTS should now be sent \n";
+  $reportMessage.="Notification  for LIFTS should now be sent \n";
   sendNotificationForLifts();
 } else {
-  echo "Notification for LIFTS should NOT be sent <br/>";
-  $reportMessage.="Notification for LIFTS should NOT be sent <br/>";
+  echo "Notification for LIFTS should NOT be sent \n";
+  $reportMessage.="Notification for LIFTS should NOT be sent \n";
 }
 
 
@@ -358,16 +358,16 @@ foreach ($nodes as $node) {
    }*/
 }
 
-echo "Snow Up:".$snow_up." Snow down: ".$snow_down." Temp:".$temp."<br/>";
+echo "Snow Up:".$snow_up." Snow down: ".$snow_down." Temp:".$temp."\n";
 updateDBSnows($snow_up,$snow_down,$temp);
 
 if ($snow_up - $previous_snow_up > 30) {
-  echo "Notification for SNOW should now be sent <br/>";
-  $reportMessage.="Notification for SNOW should now be sent <br/>";
+  echo "Notification for SNOW should now be sent \n <br/>";
+  $reportMessage.="Notification for SNOW should now be sent \n";
   sendNotificationForSnow();
 } else {
-  echo "Notification for SNOW should NOT be sent <br/>";
-  $reportMessage.="Notification for SNOW should NOT be sent <br/>";
+  echo "Notification for SNOW should NOT be sent \n <br/>";
+  $reportMessage.="Notification for SNOW should NOT be sent \n";
 }
 
 $timezone = date_default_timezone_get();
@@ -376,39 +376,46 @@ date_default_timezone_set($timezone);
 $date = date('m/d/Y h:i:s a', time());
 
 
-$mail = new PHPMailer;
+//$mail = new PHPMailer;
 
-$mail->isSMTP();                                      // Set mailer to use SMTP
-//$mail->Host = 'smtp.gmail.com';  // Specify main and backup server
-$mail->Host = 'localhost';  // Specify main and backup server
-$mail->SMTPAuth = true;                               // Enable SMTP authentication
-$mail->Username = 'info@vimateam.gr';                            // SMTP username
-$mail->Password = 'marios1989';                           // SMTP password
-$mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also        
+//$mail->isSMTP();                                      // Set mailer to use SMTP
+////$mail->Host = 'smtp.gmail.com';  // Specify main and backup server
+//$mail->Host = 'localhost';  // Specify main and backup server
+//$mail->SMTPAuth = true;                               // Enable SMTP authentication
+//$mail->Username = 'info@vimateam.gr';                            // SMTP username
+//$mail->Password = 'marios1989';                           // SMTP password
+//$mail->SMTPSecure = 'tls';                            // Enable encryption, 'ssl' also        
+//
+//$mail->From = 'info@vimateam.gr';
+//$mail->FromName = 'SkiGreece Karpenisi Automatic Data';
+////$mail->addAddress('ankit_verma@example.net', 'ankit verma');  // Add a recipient
+//$mail->addAddress('skigreece@gmail.com');               // Name is optional
+////$mail->addAddress('ign_ch@hotmail.com');               // Name is optional
+////$mail->addReplyTo('info@example.com', 'Information');
+////$mail->addCC('ign_ch@hotmail.com');
+////$mail->addBCC('bcc@example.com');
+//
+//$mail->CharSet="utf-8";
+//
+//$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
+////$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+////$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+//$mail->isHTML(true);                                  // Set email format to HTML
+//
+//$mail->Subject = "Karpenisi Conditions Update :".$date;
+//$mail->Body    = $reportMessage;
+//
+//if(!$mail->send()) {
+//  echo 'Message could not be sent.';
+//  echo 'Mailer Error: ' . $mail->ErrorInfo;
+//  exit;
+//}
 
-$mail->From = 'info@vimateam.gr';
-$mail->FromName = 'SkiGreece Karpenisi Automatic Data';
-//$mail->addAddress('ankit_verma@example.net', 'ankit verma');  // Add a recipient
-$mail->addAddress('skigreece@gmail.com');               // Name is optional
-//$mail->addAddress('ign_ch@hotmail.com');               // Name is optional
-//$mail->addReplyTo('info@example.com', 'Information');
-//$mail->addCC('ign_ch@hotmail.com');
-//$mail->addBCC('bcc@example.com');
+// Creating a log file
+$logfile = fopen("karpenisi.log","w") or die("Unable to open file");
+fwrite($logfile,$date."\n\n");
+fwrite($logfile,$reportMessage);
+fclose($logfile);
 
-$mail->CharSet="utf-8";
-
-$mail->WordWrap = 50;                                 // Set word wrap to 50 characters
-//$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-//$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-$mail->isHTML(true);                                  // Set email format to HTML
-
-$mail->Subject = "Karpenisi Conditions Update :".$date;
-$mail->Body    = $reportMessage;
-
-if(!$mail->send()) {
-  echo 'Message could not be sent.';
-  echo 'Mailer Error: ' . $mail->ErrorInfo;
-  exit;
-}
 
 ?>
