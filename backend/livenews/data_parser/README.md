@@ -20,6 +20,7 @@ We still have 4 lifts. Snowreport reports now 5, but we haven't added the 5th ye
 Total lifts : 16. There are some differences between the 2013-14 lifts names and the 2014-15. The database we are using, is the old one therefore we need to adjust the script into it. Conventions used are :
 
 	* Τηλέμαχος does not exist anymore. Therefore it needs to stay closed.
+	* Βάκχος (as it was before)  does not exist anymore. Therefore it needs to stay closed.
 	* Αφροδίτη Τηλεκαμπίνα (Βάκχος) (8-θέσιος Εναέριος) does not exist in the DB. Therefore we do not include that in the script.
 	* Sahara (Μονοθέσιος Συρόμενος) does not exist in the DB. Therefore we do not include that in the script.
 	* Baby lift 4 (Μονοθέσιος Συρόμενος) does not exist in the DB. Therefore we do not include that in the script.
